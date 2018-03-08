@@ -15,7 +15,8 @@ $sql = "CREATE TABLE UsersTable (
 			Height varchar(3),
 			Weight varchar(3),
 			Username varchar(20),
-			Password varchar(20),
+			Password varchar(70),
+			Salt char(50),
 			AuthToken varchar(8),
 			PRIMARY KEY (CustomerID),
 			UNIQUE INDEX (CustomerID)

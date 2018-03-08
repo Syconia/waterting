@@ -1,5 +1,7 @@
 <?php
 
+include 'salt_and_hash.php';
+
 if (!isset($_POST['FirstName']) OR !isset($_POST['LastName']) OR !isset($_POST['Email'])
 	OR !isset($_POST['MobileNo']) OR !isset($_POST['Height']) OR !isset($_POST['Weight'])
 	OR !isset($_POST['Username']) OR !isset($_POST['Password'])	OR !isset($_POST['CPassword']))
@@ -21,7 +23,8 @@ else
 	$height = $_POST['Height'];
 	$weight = $_POST['Weight'];
 	$username = $_POST['Username'];
-	$password = $_POST['Password'];
+	$salt = gen_salt(50);
+	$password = salted_hash($_POST['Password'], $salt);
 	$sql = "SELECT * FROM userstable WHERE Username = '$username' OR Email='$email'";
 	$result = mysqli_query($con,$sql);
 	$record_count = mysqli_num_rows($result);
@@ -44,8 +47,8 @@ else
 			return $randomToken;
 		}
 			
-		$sql = "INSERT INTO UsersTable (FirstName, LastName, Email, MobileNo, Height, Weight, Username, Password)
-		VALUES ('$firstname', '$lastname', '$email', '$mobileno', '$height', '$weight', '$username', '$password')";
+		$sql = "INSERT INTO UsersTable (FirstName, LastName, Email, MobileNo, Height, Weight, Username, Password, Salt)
+		VALUES ('$firstname', '$lastname', '$email', '$mobileno', '$height', '$weight', '$username', '$password', '$salt')";
 		mysqli_query($con,$sql); 
 		
 		$sql = "SELECT * FROM UsersTable WHERE Username = '$username' and Password = '$password'";
