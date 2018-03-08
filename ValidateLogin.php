@@ -1,4 +1,7 @@
 <?php
+
+include 'salt_and_hash.php';
+
 echo '<center>';
 $authToken = null;
 $con = mysqli_connect("localhost","csed","waterting","waterting");
@@ -15,6 +18,9 @@ $result = mysqli_query($con,$query);
 $record = mysqli_fetch_array($result);
 $username = $record['Username'];
 $password = $record['Password'];
+$salt = $record['Salt'];
+
+$checkPW = salted_hash($checkPW, $salt);
 
 //Function that generates a cookie during login session
 function getRandAuthToken()
